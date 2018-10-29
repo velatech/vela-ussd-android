@@ -31,9 +31,9 @@ until finished
 ```
 
 ### Usage 
-Foollow the instrcution below to configure Vela OBA Offline SDK once you have installed.
+Foollow the instrcution below to configure Vela OBA Offline SDK once you have installed it.
 
-#### Initiliaze
+#### Initialize
 For this step, you will need to set your `encrption key` and `Base UUSD code`
 In your Application onCreate() method, initiliase the SDK as shown below:
 
@@ -70,20 +70,29 @@ class BaseActivity : USSDActivity()
 Like for Activity, to carry out `USSD` processing in a `Fragment ` or `DialogFragment` you need to extent the `USSDFragment` or `USSDDialogFrament` accordinly and overide the neccessary methods.
 
 #### Fragment
+Java
+
 ```Java
 public class MyFragment extends USSDFragment()
 
 ```
+Kotlin
+
 ```Kotlin
 class MyFragment : USSDFragment()
 
 ```
 
 ####DialogFragment
+
+Java
+
 ```Java
 public class MyDialogFragment extends USSDDialogFragment()
 
 ```
+Kotlin
+
 ```Kotlin
 class MyDialogFragment : USSDDialogFragment()
 
@@ -154,13 +163,13 @@ Once you verify that the particlar USSD response is the response you are interes
 ```Java
 
 @Override
-public void onUSSDSuccess(@NotNull String menuServiceCode, @NotNull USSDResponse response) {}
+public void onUSSDSuccess(@NotNull String key, @NotNull USSDResponse response) {}
 
 @Override
 public void onUSSDError(@Nullable String errorMsg) {}
 
 @Override
-public void onUSSDInformation(@NotNull String menuServiceCode, @NotNull USSDResponse response) {}
+public void onUSSDInformation(@NotNull String key, @NotNull USSDResponse response) {}
 
 @Override
 public void toggleButtonState(boolean enable) {}
@@ -170,63 +179,93 @@ public void toggleMessageView(boolean show, @Nullable String message, boolean is
 
 ```
 ```Kotlin
-override fun onUSSDSuccess(menuServiceCode: String, response: USSDResponse) {}
+override fun onUSSDSuccess(key: String, response: USSDResponse) {}
 
 override fun onUSSDError(errorMsg: String?) {}
 
-override fun onUSSDInformation(menuServiceCode: String, response: USSDResponse) {}
+override fun onUSSDInformation(key: String, response: USSDResponse) {}
 
 override fun toggleButtonState(enable: Boolean) {}
 
 override fun toggleMessageView(show: Boolean, message: String?, isError: Boolean) {}
 ```
 
-### Method BreakDown
+### Method/Functions BreakDown
 
-Explain what each method does here.
+Here we describe what each fucntion does.
 
+1. #### onUssdSuccess()
+
+	This is invoked when the `processUSSDResponse(it)` is finished and every thing went fine  as expected. It returns the unique `key:String` that was passed during thr call to `dialUssd()` function and and the `USSDREsponse` object. The `USSDRespone` object is most likely going tobe different depending on the expected response from the client Api service.
+	
+2. #### onUssdError(errorMessage:String?)
+
+	This is invoked after the `processUSSDResponse(it)` is finished and error occuredd during the serialization or error returned from the server after deserialization so that you can display the appropriate error message to the user and invoke the next possible ction due to the error. It returns a dtring which is nullable depending on whether the error from server was successfully captured or not.
+
+3. #### onUssdInformation(key:String, ussdResponse: UssdResonse)
+
+	This is invoked after the `processUssdResposnse(it)` is finished and an infrmation is required to be shown to the user for a successful transactio  or for guidiance to the next process. It returns the unique `key:string`that was passes duing the invoacation od `dialUssd(code:String, key:string)` and the `UssdResponse` obeject.
+
+4. #### toggleButtonState(enable:Boolea)
+
+	This is invoked whe the ussd starts to dial and when it finishes, You can enable or disable UI interactions depending on the `enable:Boolaean` state to avoid users hitting the dial Ussd button twice.
+
+5. #### toggleMessageView(show: Boolean, message: String?, isError: Boolean)
+
+	This method is invoked specifically for UI interaction. It is used to show user `error `, `success ` or `process ` message.
+	
+## USSD String Builder
+
+To build a ussd string, you can use the internal `UssdRequest.Builder()` builUpon method as follows:
+
+Java
+
+```Java
+final String fundTRransferUssdCode = new USSDRequest.Builder(Ussd.FUND_TRANSFER_NEW())
+                .buildUpon("userId")
+                .buildUpon("userPIN")
+                .buildUpon("bankAccountId")
+                .buildUpon("amount")
+                .buildUpon("destAccountNum")
+                .buildUpon("destBankCode")
+                .buildUpon("saveAsBeneficiary")
+                .build();
+        Timber.d("UssdString: $fundTRransferUssdCode");
+        dialUSSD(fundTRransferUssdCode, Ussd.FUND_TRANSFER_NEW());
 ```
-Give an example
+Kotlin
+
+```Kotlin
+val fundTRransferUssdCode = USSDRequest.Builder(Ussd.FUND_TRANSFER_NEW)
+                .buildUpon("userId")
+                .buildUpon("userPIN")
+                .buildUpon("bankAccountId")
+                .buildUpon("amount")
+                .buildUpon("destAccountNum")
+                .buildUpon("destBankCode")
+                .buildUpon("saveAsBeneficiary")
+                .build()
+        Timber.d("UssdString: $fundTRransferUssdCode")
+        dialUSSD(fundTRransferUssdCode, Ussd.FUND_TRANSFER_NEW)
 ```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-<!--## Deployment
-
-Add additional notes about how to deploy this on a live system
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.-->
 
 ## Versioning
 
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
 
-## Authors
+<!--## Authors
 
 * **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
+-->
+<!--## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
+-->
+<!--## Acknowledgments
 
 * Hat tip to anyone whose code was used
 * Inspiration
 * etc
+-->
