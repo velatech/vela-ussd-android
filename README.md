@@ -1,5 +1,7 @@
 # Vela OBA
 
+[![](https://jitpack.io/v/org.bitbucket.vela_financial_services/velaobasdk.svg)](https://jitpack.io/#org.bitbucket.vela_financial_services/velaobasdk)
+
 Vela OBA Offline SDK enables you cary out financial transactions and bill pyamnts offline.
 
 ## Getting Started
@@ -8,27 +10,54 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+Velaoffline sdk is in the prvate domain, to get access you need to request to `accessToken` and once you have that, add it to your token to `$HOME/.gradle/gradle.properties` fro grobal access or project level gradle.properties 
 
 ```
-Give examples
+accessToekn=jp_XXXXXXXXXXXXXXXXXXXXX
+
 ```
+Alternatively, you can define it in the `build.gradle` file (app/build.gradle) before using it as follows:
+
+```
+def accessToken = "jp_XXXXXXXXXXXXXXXXXXXXXXXX"
+buildscript {
+ ...
+```
+We would make use of the `accessToken ` below.
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
+Follow the steps below to add velaoffline sdk to your project.
 
-Say what the step will be
+1. Add the JitPack repository to your build file
+	
+	Add it in your root build.gradle at the end of repositories:
 
-```
-Give the example
-```
+	```Groove
+	allprojects {
+		repositories {
+			...
+			maven { 
+			url 'https://jitpack.io'
+			credentials { username accessToken }
+			 }
+			...
+		}
+	}
+	```
+2. Add the dependency:
 
-And repeat
+	Open your app level `build.gradel` and add the velaoffline sdk dependency.
+	
+	```
+	dependencies {
+		....
+		implementation 'org.bitbucket.vela_financial_services:velaobasdk: 0.0.17'
+		...
+	}
+	```
+3. Sync and build your project.
 
-```
-until finished
-```
 
 ### Usage 
 Foollow the instrcution below to configure Vela OBA Offline SDK once you have installed it.
