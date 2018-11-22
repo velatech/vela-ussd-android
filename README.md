@@ -1,16 +1,16 @@
-# Vela OBA
+# VelaOffline SDK
 
 [![](https://jitpack.io/v/org.bitbucket.vela_financial_services/velaobasdk.svg)](https://jitpack.io/#org.bitbucket.vela_financial_services/velaobasdk)
 
-Vela OBA Offline SDK enables you cary out financial transactions and bill pyamnts offline.
+Vela OBA Offline SDK enables you to carry out financial transactions and bill payments offline.
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+Follow the instructions below to get started with `VelaOffline` SDK.
 
 ### Prerequisites
 
-Velaoffline sdk is in the prvate domain, to get access you need to request to `accessToken` and once you have that, add it to your token to `$HOME/.gradle/gradle.properties` fro grobal access or project level gradle.properties 
+Velaoffline SDK is in the private domain, to get access you need to request for `accessToken` and once you have that, add it to your `$HOME/.gradle/gradle.properties` for global access or project level gradle.properties file.
 
 ```
 accessToekn=jp_XXXXXXXXXXXXXXXXXXXXX
@@ -20,51 +20,52 @@ Alternatively, you can define it in the `build.gradle` file (app/build.gradle) b
 
 ```
 def accessToken = "jp_XXXXXXXXXXXXXXXXXXXXXXXX"
+
+...
+
 buildscript {
  ...
 ```
-We would make use of the `accessToken ` below.
+> We would make use of the `accessToken ` below.
 
 ### Installing
 
-Follow the steps below to add velaoffline sdk to your project.
+Follow the steps below to add velaOffline SDK to your project.
 
-1. Add the JitPack repository to your build file
-	
-	Add it in your root build.gradle at the end of repositories:
+1. Add the JitPack repository to your your poject level `build.gradel` file if it is not added already.
 
-	```Groove
-	allprojects {
-		repositories {
-			...
-			maven { 
-			url 'https://jitpack.io'
-			credentials { username accessToken }
-			 }
-			...
-		}
-	}
-	```
-2. Add the dependency:
+    ```Groove
+    allprojects {
+        repositories {
+            ...
+            maven { 
+            url 'https://jitpack.io'
+            credentials { username accessToken }
+             }
+            ...
+        }
+    }
+    ```
+2. Add VelaOffline dependency:
 
-	Open your app level `build.gradel` and add the velaoffline sdk dependency.
-	
-	```
-	dependencies {
-		....
-		implementation 'org.bitbucket.vela_financial_services:velaobasdk: 0.0.17'
-		...
-	}
-	```
+    Open your app level `build.gradel` and add the velaoffline sdk dependency.
+    
+    ```
+    dependencies {
+        ....
+        implementation 'org.bitbucket.vela_financial_services:velaobasdk: 0.0.17'
+        ...
+    }
+    ```
 3. Sync and build your project.
 
 
 ### Usage 
-Foollow the instrcution below to configure Vela OBA Offline SDK once you have installed it.
+Follow the instrcution below to configure Vela OBA Offline SDK once you have installed it.
 
 #### Initialize
-For this step, you will need to set your `encrption key` and `Base UUSD code`
-In your Application onCreate() method, initiliase the SDK as shown below:
+For this step, you will need to set your `encryption key` and `Base UUSD code`
+In your Application onCreate() method, initialize the SDK as shown below:
 
 
 ```
@@ -79,7 +80,7 @@ VelaOffline.initWithDefaultConfig(this, velaOfflineConfig)
 ```
 
 #### Activity Usage
-For you to be able to carry out `USSD` processing in an `Activity` either as a standalone Activity or an Activity that hosts a `Fragment`, you need to extent the `USSDActivity` as show below:
+For you to be able to carry out `USSD` processing in an `Activity` either as a standalone Activity or an Activity that hosts a `Fragment`, you need to extend the `USSDActivity` as shown below:
 
 ##### Java
 
@@ -96,7 +97,7 @@ class BaseActivity : USSDActivity()
 ```
 
 #### Fragment Usage
-Like for Activity, to carry out `USSD` processing in a `Fragment ` or `DialogFragment` you need to extent the `USSDFragment` or `USSDDialogFrament` accordinly and overide the neccessary methods.
+Like for Activity, to carry out `USSD` processing in a `Fragment ` or `DialogFragment` you need to extend the `USSDFragment` or `USSDDialogFrament` accordingly and override the necessary methods.
 
 #### Fragment
 Java
@@ -135,17 +136,17 @@ From the USSDActivity(),Fragment() or DialogFragment() that was extended from ab
 
 `ussdCode: The ussdCode that you wish to run.`
 
-`key: Any random string that is used to retrive response from the USSDService.`
+`key: Any random string that is used to retrieve the response from the USSDService.`
 
-> Note: For the `key:String`, it can be any string, this same stringis mapped to the response when it is returned. So you have to persist the key as a variable of a constant where you can easily access it and check it against the response from the USSDService.
+> Note: For the `key: String`, it can be any string, this same string is mapped to the response when it is returned. So you have to persist the key as a variable of a constant where you can easily access it and check it against the response from the USSDService.
 
 
 ## Retrieving Result from USSDResponse
-Once you invoke the dialUSSD() function, the VelaOfffline module is responsible for making the USSD request, retreiving, decryting and parsing the response and finally broadcasting the response object to all listeners.
+Once you invoke the dialUSSD() function, the VelaOfffline module is responsible for making the USSD request, retrieving, decrypting and parsing the response and finally broadcasting the response object to all listeners.
 
-To recieve a response from ussd request, you need the key you passed on to the dialUSSD() function. This is to ensure that you are only lsitening to responses from requests that you initilaised.
+To receive a response from USSD request, you need the key you passed on to the dialUSSD() function. This is to ensure that you are only listening to responses from requests that you initialised.
 
-The `OverlayService` exposes a static variable of type `LiveDate<USSDEvent>` that you can observe from any LifecyleOwner and get notified accordinlgy.
+The `OverlayService` exposes a static variable of type `LiveDate<USSDEvent>` that you can observe from any LifecyleOwner and get notified accordingly.
 
 The USSDEvent class is shown below: 
 
@@ -187,7 +188,7 @@ OverlayService.USSDEvent.observe(this, Observer { event ->
 
 > Note:  You need to use `peekContent()` to ensure that your interaction with this event does not affect other observers.
 
-Once you verify that the particlar USSD response is the response you are interested in by usinf `peekContent()` and then checking the unique key against the saved key, you can proceed and invoke the `processUSSDResponse(USSDEvent:ussdEvent)`. This function will decrypt, and pass the USSDRespone and invoke the followinf functions accordinlgy based on the outcome of the processing:
+Once you verify that the particular USSD response is the response you are interested in by using `peekContent()` and then checking the unique key against the saved key, you can proceed and invoke the `processUSSDResponse(USSDEvent:ussdEvent)`. This function will decrypt, and pass the USSDRespone and invoke the following functions accordingly based on the outcome of the processing:
 
 ```Java
 
@@ -221,31 +222,31 @@ override fun toggleMessageView(show: Boolean, message: String?, isError: Boolean
 
 ### Method/Functions BreakDown
 
-Here we describe what each fucntion does.
+Here we describe what each function does.
 
 1. #### onUssdSuccess()
 
-	This is invoked when the `processUSSDResponse(it)` is finished and every thing went fine  as expected. It returns the unique `key:String` that was passed during thr call to `dialUssd()` function and and the `USSDREsponse` object. The `USSDRespone` object is most likely going tobe different depending on the expected response from the client Api service.
-	
+    This is invoked when the `processUSSDResponse(it)` is finished and everything went fine as expected. It returns the unique `key:String` that was passed during the call to `dialUssd()` function and the `USSDREsponse` object. The `USSDRespone` object is most likely going to be different depending on the expected response from the client API service.
+    
 2. #### onUssdError(errorMessage:String?)
 
-	This is invoked after the `processUSSDResponse(it)` is finished and error occuredd during the serialization or error returned from the server after deserialization so that you can display the appropriate error message to the user and invoke the next possible ction due to the error. It returns a dtring which is nullable depending on whether the error from server was successfully captured or not.
+    This is invoked after the `processUSSDResponse(it)` is finished and an error occurred during the serialization or error returned from the server after deserialization so that you can display the appropriate error message to the user and invoke the next possible action due to the error. It returns a during which is nullable depending on whether the error from the server was successfully captured or not.
 
 3. #### onUssdInformation(key:String, ussdResponse: UssdResonse)
 
-	This is invoked after the `processUssdResposnse(it)` is finished and an infrmation is required to be shown to the user for a successful transactio  or for guidiance to the next process. It returns the unique `key:string`that was passes duing the invoacation od `dialUssd(code:String, key:string)` and the `UssdResponse` obeject.
+    This is invoked after the `processUssdResposnse(it)` is finished and an information is required to be shown to the user for a successful transaction or for guidance to the next process. It returns the unique `key:String`that was passed during the invocation of `dialUssd(code: String, key: String)` and the `UssdResponse` object.
 
 4. #### toggleButtonState(enable:Boolea)
 
-	This is invoked whe the ussd starts to dial and when it finishes, You can enable or disable UI interactions depending on the `enable:Boolaean` state to avoid users hitting the dial Ussd button twice.
+    This is invoked when the USSD starts to dial and when it finishes, You can enable or disable UI interactions depending on the `enable: Boolean` state to avoid users hitting the dial USSD button twice.
 
 5. #### toggleMessageView(show: Boolean, message: String?, isError: Boolean)
 
-	This method is invoked specifically for UI interaction. It is used to show user `error `, `success ` or `process ` message.
-	
+    This method is invoked specifically for UI interaction. It is used to show user `error `, `success ` or `process ` message.
+    
 ## USSD String Builder
 
-To build a ussd string, you can use the internal `UssdRequest.Builder()` builUpon method as follows:
+To build a USSD string, you can use the internal `UssdRequest.Builder()` `buildUpon()`  method as follows:
 
 Java
 
