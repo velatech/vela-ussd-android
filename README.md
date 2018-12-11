@@ -16,7 +16,7 @@ Velaoffline SDK is in the private domain, to get access you need to request for 
 accessToekn=jp_XXXXXXXXXXXXXXXXXXXXX
 
 ```
-Alternatively, you can define it in the `build.gradle` file (app/build.gradle) before using it as follows:
+Alternatively, you can define it in the `build.gradle` file (app/build.gradle) before using it.
 
 ```
 def accessToken = "jp_XXXXXXXXXXXXXXXXXXXXXXXX"
@@ -142,11 +142,11 @@ From the USSDActivity(),Fragment() or DialogFragment() that was extended from ab
 
 
 ## Retrieving Result from USSDResponse
-Once you invoke the dialUSSD() function, the VelaOfffline module is responsible for making the USSD request, retrieving, decrypting and parsing the response and finally broadcasting the response object to all listeners.
+Once you invoke the dialUSSD() function, the VelaOfffline SDK module is responsible for making the USSD request, retrieving, decrypting and parsing the response and finally broadcasting the response object to all listeners.
 
 To receive a response from USSD request, you need the key you passed on to the dialUSSD() function. This is to ensure that you are only listening to responses from requests that you initialised.
 
-The `OverlayService` exposes a static variable of type `LiveDate<USSDEvent>` that you can observe from any LifecyleOwner and get notified accordingly.
+The `OverlayService` exposes a static constant of type `LiveDate<USSDEvent>` called `USSDEvent` that you can observe from any LifecyleOwner and get notified accordingly of any USSD event.
 
 The USSDEvent class is shown below: 
 
@@ -220,7 +220,7 @@ override fun toggleButtonState(enable: Boolean) {}
 override fun toggleMessageView(show: Boolean, message: String?, isError: Boolean) {}
 ```
 
-### Method/Functions BreakDown
+### Method / Functions BreakDown
 
 Here we describe what each function does.
 
